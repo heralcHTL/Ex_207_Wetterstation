@@ -5,17 +5,41 @@
  */
 package gui;
 
+import bl.WeatherModel;
+import bl.WeatherStation;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author Alex
  */
 public class WeatherGUI extends javax.swing.JFrame {
 
+    WeatherModel wm = new WeatherModel();
+    WeatherStationDialog wsd = new WeatherStationDialog(this, true);
     /**
      * Creates new form WeatherGUI
      */
     public WeatherGUI() {
         initComponents();
+        initTable();
+    }
+    
+    public void initTable()
+    {
+        int cnt = 0;
+        DefaultTableColumnModel dtcm = new DefaultTableColumnModel();
+        String[] colNames = {"Place", "Sea Level", "Temperature", "rel. Humidity"};
+        for (String name : colNames)
+        {
+            cnt++;
+            TableColumn tc = new TableColumn(cnt);
+            tc.setHeaderValue(name);
+            dtcm.addColumn(tc);
+        }
+        taTable.setColumnModel(dtcm);
+        taTable.setModel(wm);
     }
 
     /**
@@ -59,7 +83,7 @@ public class WeatherGUI extends javax.swing.JFrame {
         jMenuItem1.setText("add WeatherStation");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                onAddStation(evt);
             }
         });
         jMenu1.add(jMenuItem1);
@@ -84,9 +108,15 @@ public class WeatherGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void onAddStation(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddStation
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        wsd.setVisible(true);
+        if(wsd.isOk())
+        {
+            WeatherStation ws = wsd.getWs();
+            wm.addStation(ws);
+        }
+    }//GEN-LAST:event_onAddStation
 
     /**
      * @param args the command line arguments

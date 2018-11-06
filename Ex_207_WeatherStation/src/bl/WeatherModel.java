@@ -15,6 +15,20 @@ import javax.swing.table.AbstractTableModel;
 public class WeatherModel extends AbstractTableModel{
 
     private LinkedList<WeatherStation> list = new LinkedList<>();
+
+    public WeatherModel() {
+        list.add(new WeatherStation("Feldbach", 285, 12, 98));
+    }
+    
+    public void addStation(WeatherStation ws)
+    {
+        list.add(ws);
+    }
+    
+    public void removeStation(int i)
+    {
+        
+    }
     
     @Override
     public int getRowCount() {
@@ -23,12 +37,21 @@ public class WeatherModel extends AbstractTableModel{
 
     @Override
     public int getColumnCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 4;
     }
 
     @Override
     public Object getValueAt(int i, int i1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        WeatherStation ws = list.get(i);
+        
+        switch(i1)
+        {
+            case 0: return ws.getPlace();
+            case 1: return ws.getSealevel() + "m";
+            case 2: return ws.getTemperature() + "°";
+            case 3: return ws.getHumidity() + "%";
+            default: return "???";
+        }
     }
     
 }
